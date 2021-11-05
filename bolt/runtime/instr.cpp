@@ -626,8 +626,11 @@ static char *getBinaryPath() {
   uint64_t FDdir = __open(DirPath,
                           /*flags=*/0 /*O_RDONLY*/,
                           /*mode=*/0666);
+  assert(static_cast<int64_t>(FDdir) >= 0,
+         "failed to open /proc/self/map_files1");
+
   assert(static_cast<int64_t>(FDdir) > 0,
-         "failed to open /proc/self/map_files");
+         "failed to open /proc/self/map_files2");
 
   while (long Nread = __getdents(FDdir, (struct dirent *)Buf, BufSize)) {
     assert(static_cast<int64_t>(Nread) != -1, "failed to get folder entries");
